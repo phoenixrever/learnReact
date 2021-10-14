@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+<script type="text/babel">
+    class Lifecycle extends React.Component {
+        constructor(){
+            super();
+            console.log("lifecycle=========>constructor");
+        }
+        state={
+          count:0,
+            inner:"諸君！私は戦争は好きだ"
+        };
+        add=()=>{
+            const {count} =this.state;
+          this.setState({count:count+1});
+        };
+        remove=()=>{
+           ReactDOM.unmountComponentAtNode(document.getElementById("app"))
+        };
+        force=()=>{
+            this.forceUpdate();
+        };
+
+        passToInner=()=>{
+            this.setState({
+                inner:"恥ずかしい"
+            })
+        };
+        //============================生命周期==============================
+
+        componentWillMount(){
+            console.log("lifecycle=========>componentWillMount");
+        }
+        componentDidMount(){
+            console.log("lifecycle=========>componentDidMount");
+        }
+
+        shouldComponentUpdate(){
+            console.log("lifecycle=========>shouldComponentUpdate");
+            return true;
+        }
+        componentWillUpdate(){
+            console.log("lifecycle=========>componentWillUpdate");
+        }
+        componentDidUpdate(){
+            console.log("lifecycle=========>componentDidUpdate");
+        }
+
+        componentWillUnmount(){
+            console.log("lifecycle=========>componentWillUnmount");
+        }
+        render() {
+            console.log("lifecycle=========>render");
+
+            return (
+                <div>
+                    <div>{this.state.count}</div>
+                    <button onClick={this.add}>+</button>
+                    <button onClick={this.remove}>卸载组件</button>
+                    <button onClick={this.force}>强制更新不经过setState</button>
+                    <button onClick={this.passToInner}>違う、君は好きじゃない</button>
+                    <InnerComponent　inner={this.state.inner}/>
+                </div>
+            )
+        }
+    }
+
+    class InnerComponent extends React.Component{
+        //初始化的props时候不执行 第二次接收数据时候才会执行
+        componentWillReceiveProps(props){
+            console.log("lifecycle InnerComponent=========>componentWillReceiveProps",props);
+        }
+        render(){
+            return (
+                <h1>{this.props.inner}</h1>
+            )
+        }
+    }
+
+    ReactDOM.render(<Lifecycle/>, document.getElementById("app"),);
+
+</script>
+
+</body>
+</html>

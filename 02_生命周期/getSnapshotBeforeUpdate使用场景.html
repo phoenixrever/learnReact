@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .list{
+        width:200px;
+        height:150px;
+        background-color:skyblue;
+        overflow: auto;
+    }
+    .news{
+        height: 30px;
+    }
+</style>
+<body>
+<div id="app">
+</div>
+<script src="../js.16.14/react.development.js"></script>
+<script src="../js.16.14/react-dom.development.js"></script>
+<script src="../js.16.14/babel.min.js"></script>
+<script type="text/babel">
+
+    class Snapshot extends React.Component {
+        state={
+          news:[],
+        };
+
+        getSnapshotBeforeUpdate(){
+           return  this.refs.list.scrollHeight
+        }
+
+        componentDidUpdate(prevProps,prevState,height){
+            this.refs.list.scrollTop+=this.refs.list.scrollHeight-height;
+        }
+        componentDidMount(){
+            setInterval(()=>{
+                const {news}=this.state;
+                let value="第"+(news.length+1)+"条新闻";
+                this.setState({
+                    //value写在前面每次加载都会是第一个元素显示出来
+                    news:[value,...news,]
+                });
+                console.log(this.state.news);
+            },1000)
+        }
+        render() {
+
+            return (
+                <div>
+                    <ul className="list" ref="list">
+                        {this.state.news.map((item,index)=><li className="news" key={index}>{item}</li>)}
+                    </ul>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Snapshot/>, document.getElementById("app"),);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js.16.14/react.development.js"></script>
+<script src="../js.16.14/react-dom.development.js"></script>
+<script src="../js.16.14/babel.min.js"></script>
+<script type="text/babel">
+    class Lifecycle extends React.Component {
+        constructor() {
+            super();
+            console.log("lifecycle=========>constructor");
+        }
+
+        state = {
+            count: 0,
+            inner: "諸君！私は戦争は好きだ"
+        };
+        add = () => {
+            const {count} = this.state;
+            this.setState({count: count + 1});
+        };
+        remove = () => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("app"))
+        };
+        force = () => {
+            this.forceUpdate();
+        };
+
+        passToInner = () => {
+            this.setState({
+                inner: "恥ずかしい"
+            })
+        };
+
+        //============================生命周期==============================
+
+        //派生状态会导致代码冗余,使组件难以维护,
+        //只要不return和state一样的属性 就不会影响state值更新
+        //可以在这比较props值和state的值
+        static getDerivedStateFromProps(props,state) {
+            console.log("lifecycle=========>getDerivedStateFromProps",props,state);
+            // return {count:111}//不更新
+            // return null//更新
+            return props//更新
+        }
+
+        /*
+        getSnapshotBeforeUpdate() 在最近一次渲染输出（提交到 DOM 节点）之前调用。
+        它使得组件能在发生更改之前从 DOM 中捕获一些信息（例如，滚动位置）。
+        此生命周期方法的任何返回值将作为参数传递给 componentDidUpdate()
+         */
+        getSnapshotBeforeUpdate(){
+            console.log("lifecycle=========>getSnapshotBeforeUpdate");
+            return "shadowsilent";
+        }
+        componentDidMount() {
+            console.log("lifecycle=========>componentDidMount");
+        }
+
+        shouldComponentUpdate() {
+            console.log("lifecycle=========>shouldComponentUpdate");
+            return true;
+        }
+
+        //oldState = [...oldProps,...oldState]
+        componentDidUpdate(oldProps,oldState,snapshotValue) {
+            console.log("lifecycle=========>componentDidUpdate",oldProps,oldState,snapshotValue);
+        }
+
+        componentWillUnmount() {
+            console.log("lifecycle=========>componentWillUnmount");
+        }
+
+        render() {
+            console.log("lifecycle=========>render");
+
+            return (
+                <div>
+                    <div>{this.state.count}</div>
+                    <button onClick={this.add}>+</button>
+                    <button onClick={this.remove}>卸载组件</button>
+                    <button onClick={this.force}>强制更新不经过setState</button>
+                    <button onClick={this.passToInner}>違う、君は好きじゃない</button>
+                    <div>{this.state.inner}</div>
+                </div>
+            )
+        }
+    }
+
+
+    ReactDOM.render(<Lifecycle name="水卜桜"/>, document.getElementById("app"),);
+
+</script>
+
+</body>
+</html>

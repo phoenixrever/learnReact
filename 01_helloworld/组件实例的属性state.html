@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+<script type="text/babel">
+    class MyComponent extends React.Component {
+        constructor(props) {
+            console.log("constructor");//this必须在super后面其他可以在前面
+            super(props);
+            this.state = {
+                show:false
+            };
+            // bind作用 1 生产一个新的函数
+            // 2 改变函数的this指向(原来是undefined)
+            // 这里 生成了一个this指向实例的函数赋值给this对象实例
+            this.change=this.change.bind(this);
+        }
+        //change在原型上供实例调用
+        change(){
+            this.setState({
+                    show: !this.state.show
+                }
+            );
+            //此处相当于 const x=p.change  this在use strict模式下直接调用是undefined
+            //类中的方法默认开启了局部的严格模式
+            console.log(this);
+        }
+        //每调用一次setstate render就执行一次刷新页面
+        render() {
+            //这边调用的是新生成赋值给this的新change函数
+            return <h2 onClick={this.change} id="title">{this.state.show? '水卜桜は巨乳ではない':'橋本有菜没有腿'}</h2>
+        }
+
+    }
+    ReactDOM.render(<MyComponent/>, document.getElementById("app"),);
+</script>
+</body>
+</html>

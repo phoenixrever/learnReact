@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+<script type="text/babel">
+    class MyComponent extends React.Component {
+        //createRef方法返回一个容器(类似refs属性对象),存储被ref表识的节点
+        //注意 每个元素都要生产一个createRef对象 同名字的货覆盖 只有一个current 元素
+        //同理 不能和react对象属性重名 比如取名refs
+        myRef=React.createRef();
+        state = {
+            showValue: "xxxxxxxxx"
+        };
+        changeInput = () => {
+            this.setState({
+                showValue: this.myRef.current.value
+            });
+        };
+        //尽量少用ref
+        changeEvent = (event) => {
+            this.setState({
+                showValue: event.target.value
+            });
+        };
+        render(){
+            console.log(this);
+            return (
+                <div>
+                    <input type="text" ref={this.myRef}/>
+                    <button onClick={this.changeInput}>点我</button>
+                    <input type="text" onBlur={this.changeEvent}/>
+                    <div>{this.state.showValue}</div>
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(<MyComponent/>,document.getElementById("app"),);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    function test(){
+        console.log(this);
+    }
+    test();//windows
+
+    const x=test.bind({a:1,b:2});
+    x(); //输出{a: 1, b: 2}
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .title{
+        background-color: red;
+    }
+</style>
+<body>
+<div id="app"></div>
+<!--核心库-->
+<script src="../js/react.development.js"></script>
+<!-- 操作dom库-->
+<script src="../js/react-dom.development.js"></script>
+<!--babel jsx 转 js-->
+<script src="../js/babel.min.js"></script>
+<!--babel标签不能少-->
+<script type="text/babel">
+    const myId="phoenixHell";
+    const myName="shadowSilent";
+
+    const VDOM=(
+        <div>
+            <h1 className="title">{myId.toLocaleLowerCase()}</h1>
+            <h1><span style={{color:'red'}}>{myName.toLocaleLowerCase()}</span></h1>
+            <input type="text"/>
+        </div>
+    );
+    const element = document.getElementById("app");
+    console.log(element);
+    // debugger;
+    //js方法创建DOm
+    ReactDOM.render(VDOM,document.getElementById("app"));
+</script>
+
+<!--<script type="text/javascript">-->
+<!--    // const VDOM1=<h1>hello world</h1>;-->
+<!--    //js方法创建Dom (标签名,标签属性,标签内容)-->
+<!--    const VDOM2 = React.createElement("h1",{id:'title'},'hello react');-->
+
+<!--    ReactDOM.render(VDOM2,document.getElementById("app"));-->
+<!--</script>-->
+
+</body>
+</html>

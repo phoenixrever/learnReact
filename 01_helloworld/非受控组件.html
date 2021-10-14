@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+<script type="text/babel">
+    //
+    class MyComponent extends React.Component {
+        state = {
+            username: '',
+            password: ''
+        };
+        saveFormData=(dataType)=>{
+            return (event)=>{
+                this.setState({
+                    //不能这样写会往state里面放个新键
+                    // value:event.target.value,
+                    //要加[] state 变量传值方法
+                   [dataType]:event.target.value,
+                });
+
+            }
+        };
+        saveFormData2=(dataType,event)=>{
+            this.setState({[dataType]:event.target.value});
+
+
+        };
+        handleSubmit=(event)=>{
+            event.preventDefault();
+            alert(`${this.state.username}  ${this.state.password}`)
+        };
+
+        render() {
+            return (
+                <div>
+                    <form onSubmit={this.handleSubmit}>
+                        {/* this.saveFormData("username")  是把saveFormData的返回值给了onchange 而不是函数*/}
+                        <label>用户名 <input onChange={this.saveFormData("username")} type="text" /></label>
+                        <label>密码 <input onChange={event=>this.saveFormData2("password",event)} type="password"/></label>
+                        <button>登陆</button>
+                    </form>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<MyComponent/>, document.getElementById("app"),);
+
+</script>
+
+</body>
+</html>
