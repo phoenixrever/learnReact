@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <style></style>
+  <body>
+    <div id="test"></div>
+    <!-- 核心库 必须按顺序引用 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 操作dom库-->
+    <script src="../js/react-dom.development.js"></script>
+    <!--javacript方式创建DOM 不需要引入babel -->
+    <!-- <script src="../js/babel.min.js"></script> -->
+
+    <script type="text/javascript">
+      //js方法创建Dom (标签名,标签属性,标签内容)-->
+      //只有一个元素 这样创建还行 多个的话就比较复杂  比如 h1 里面还有span 这是jsx的好处就出现了 可以直接写
+      const VDOM = React.createElement('h1', { id: 'title' }, 'hello react');
+
+      ReactDOM.render(VDOM, document.getElementById('app'));
+    </script>
+  </body>
+</html>

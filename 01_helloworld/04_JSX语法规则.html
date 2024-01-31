@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .title {
+        background-color: red;
+    }
+</style>
+<body>
+<div id="app"></div>
+<!--核心库-->
+<script src="../js/react.development.js"></script>
+<!-- 操作dom库-->
+<script src="../js/react-dom.development.js"></script>
+<!--babel jsx 转 js-->
+<script src="../js/babel.min.js"></script>
+<!--babel标签不能少-->
+<script type="text/babel">
+
+    const myId="phoenixHell";
+    const myName="shadowSilent";
+
+    // 创建虚拟DOM元素
+    const VDOM=(
+        <div>
+            <h1 className="title">{myId.toLowerCase()}</h1>
+            <h1><span style={{color:'red',fontSize:'30px'}}>{myName.toLowerCase()}</span></h1>
+            <input type="text"/>
+        </div>
+    );
+
+    // 渲染虚拟DOM到页面真实DOM容器中
+    ReactDOM.render(VDOM, document.getElementById("app"));
+
+    /* 
+        jsx语法规则 ：
+            1.定义虚拟DOM，不能使用引号
+            2.标签中混入JS表达式的时候使用{}
+            3.样式的类名指定不要使用class，使用className
+            4.内敛样式要使用style={{样式:"值"}} 外面的表示js表达式 里面的表示对象 多单词用小驼峰
+            5.不能有多个根标签，只能有一个根标签
+            6.标签必须闭合
+            7.标签首字母
+                (1).如果小写字母开头，就将标签转化为html同名元素，如果html中无该标签对应的元素，就报错
+                (2).如果是大写字母开头，react就去渲染对应的组件，如果没有就报错
+    */
+</script>
+
+</body>
+</html>
