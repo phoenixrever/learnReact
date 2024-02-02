@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <!--核心库-->
+    <script src="../js/react.development.js"></script>
+    <!-- 操作dom库-->
+    <script src="../js/react-dom.development.js"></script>
+    <!--babel jsx 转 js-->
+    <script src="../js/babel.min.js"></script>
+    <!--babel标签不能少-->
+    <script type="text/babel">
+      //模拟json数据 数组最简单
+      const data = ['健康','お金持ち',,'筋肉マン'];
+      // 创建虚拟DOM元素
+      const VDOM = (
+        <div>
+          <h1>2024年の願い🤭</h1>
+          <ul>
+            {
+              //想用for循环遍历数组 发现怎么写都报错
+              // for (let i = 0; i < data.length; i++) {
+              //   const element = data[i];
+              // }
+
+              //条件判断也不能写
+              // if（1===1）{
+              // }
+
+              /* 
+               结论:
+                jsx语法规则 ：
+                2.标签中混入JS表达式的时候使用{}  
+                只有表达式才能在{}中写 js代码是不可以的
+
+                区分【js表达式】 与 【js语句（代码）】
+                  1.表达式：一个表达式会产生一个值，可以放在任何一个需要值的地方
+                      下面这些都是表达式：
+                          （1）变量 a
+                          （2）变量 a+b
+                          （3）函数 function(1)
+                          （4）arr.map()
+                          （5）function test{} 定义一个函数的时候也是有返回值的（会返回函数本身的字符串打印出来）
+                     如何判断：
+                          const =   1，2，3 能接到值就是表达式 （function 不屑返回值 也会返回undefined）
+                  2.语句或者代码：
+                      （1） if{}
+                      （2） for{}
+                      （3） switch{}
+              */      
+
+              //map遍历第二个参数是索引值  但是 用index 是不合理的 在后面章节会解释
+             data.map((item,index)=>{
+              return <li key ={index}>{item}</li>  //注意这边要{}
+             })      
+
+            }
+          </ul>
+        </div>
+      );
+
+      // 渲染虚拟DOM到页面真实DOM容器中
+      ReactDOM.render(VDOM, document.getElementById('app'));
+    </script>
+  </body>
+</html>

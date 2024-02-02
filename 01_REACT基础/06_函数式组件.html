@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>函数式组件</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+<script type="text/babel">
+    //1) 创建组件
+    function demo() {
+        //此处的this是undefined（默认windows）,因为babel编译（翻译）你写的这些代码后 后开启了严格模式  
+        //禁止自定义的函数里面的this 指向window
+        console.log(this);
+        return <h1>我是函数式组件</h1>
+    }
+     //2) 渲染组件到页面 注意 必须运行组件才能返回 页面元素 传一个函数名是不行的 函数类型不能作为react 节点 
+     //下面代码相当于 const DOM = demo() ===>  ReactDOM.render(DOM)
+    // ReactDOM.render(demo(),document.getElementById("app"));
+
+
+
+    //但是 上面的写法有些别扭 为更符合react组件化 
+    //首字母 必须大写 这时候Demo它是一个由函数定义的组件 而不是一个函数
+    //你写组件<Demo/> 的时候react 会自动帮你调用 Demo() 函数
+    function Demo() {
+        console.log(this);//此处的this是undefined,因为babel编译后开启了严格模式
+        return <h1>我是函数式组件</h1>
+    }
+    ReactDOM.render(<Demo/>,document.getElementById("app"));
+
+</script>
+</body>
+</html>
