@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>类式组件</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+<script type="text/babel">
+    class MyComponent extends React.Component {
+        //现在这边暂时不用写构造器 等到props属性传递在写
+
+        //render是MyComponent原型对象上的方法，供实例使用   
+        //react 会创建类的实例调用render的方法来渲染你return 的页面元素
+
+        //render中的this 就是MyComponent组件实例对象（函数定义的组件是没有this的）
+        render(){
+            console.log(this);
+            return <h2>hello world</h2>
+        }
+    }
+
+    ReactDOM.render(<MyComponent/>,document.getElementById("app"),);
+    /*
+        1.React 解析组件标签，找到MyComponet组件
+        2.发现组件是使用类定义的，随后new出该类的实例，并通过该实例调用到原型上的render方法
+        将render返回的虚拟DOM转化为真实DOM，随后呈现在页面中。
+    */
+
+</script>
+
+</body>
+</html>

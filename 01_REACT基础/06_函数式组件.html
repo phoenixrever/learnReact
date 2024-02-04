@@ -31,7 +31,10 @@
         return <h1>我是函数式组件</h1>
     }
     ReactDOM.render(<Demo/>,document.getElementById("app"));
-
+    /*
+        1.React 解析组件标签，找到MyComponet组件
+        2.发现组件是使用函数定义的，随后调用该函数，将返回的虚拟DOM转化为真实DOM，随后呈现在页面中。
+    */
 </script>
 </body>
 </html>

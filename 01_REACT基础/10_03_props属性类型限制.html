@@ -6,44 +6,53 @@
 </head>
 <body>
 <div id="app"></div>
+<!-- 全局对象React -->
 <script src="../js/react.development.js"></script>
+<!-- 全局对象ReactDOM -->
 <script src="../js/react-dom.development.js"></script>
 <script src="../js/babel.min.js"></script>
+<!-- 类型限制和必要性限制 全局对象PropTypes-->
 <script src="../js/prop-types.js"></script>
 <script type="text/babel">
     class Person extends React.Component {
-        constructor(props) {
-            super();
-            console.log(props);
-        }
-
-// static 对类加属性
-        static  propTypes={
-            name:PropTypes.string.isRequired,
-            sex:PropTypes.string,
-            age:PropTypes.number,
-            speak:PropTypes.func   //函数是func
-        };
-        static defaultProps={
-            name:"仮面",
-            sex:"未知",
-            age:999,
-        };
-
         render(){
-            //props只读
+            //props只读 不允许改
+            //this.props.name="jack" 控制台会报错
             const {name,sex,age,speak}=this.props;
             return (
                 <ul>
                     <li>{name}</li>
                     <li>{sex}</li>
-                    <li>{age}</li>
+                    <li>{age+1}</li>
                     <li>{speak()}</li>
                 </ul>
             )
         }
-
     }
+
+    //传入props数据的类型限制和必要性限制
+    /* 
+        name:React.PropTypes.string
+        react 15 之前PropTypes 都是在React 上面
+        从16 开始 在单独的prop-types.js 文件里面
+
+        string number func 命名是为了防止和 JS产生冲突
+    
+    */
+    Person.propTypes={
+        name:PropTypes.string.isRequired,
+        sex:PropTypes.string,
+        age:PropTypes.number,
+        speak:PropTypes.func   //函数是func
+    };
+
+    //设置props的默认值
+    Person.defaultProps={
+        name:"仮面",
+        sex:"未知",
+        age:999,
+    };
+
     const p={name:"shadow",age:11,speak:function () {
             console.log("speak")
         }};

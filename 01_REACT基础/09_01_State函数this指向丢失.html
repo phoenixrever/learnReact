@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>State函数this指向丢失/title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.min.js"></script>
+    <script type="text/babel">
+      /*
+       ************此章知识点较多 请直接看文档**************
+
+       react 在帮我们new  React.Component 对象的时候传了Props
+    */
+      class Weather extends React.Component {
+        //React.Component 需要props 参数 所以作为资料的Weather 创建的时候也需要
+        constructor(props) {
+          super(props);
+          //state 是个{} 对象
+          this.state = {
+            isHot: true,
+          };
+        }
+
+
+        /* 
+          1.change() 函数在是放在里Weather的原型对象上 供实例使用
+          2.由于change 是作为onClick的回调，所以不是通过实例调用的，是直接调用
+          3.类中的方法默认开启了局部的严格模式 由于change中的this都是undefined
+        */ 
+
+        change() {
+          this.state.isHot = !this.state.isHot;
+        }
+
+        render() {
+          //onClick js原生事件都重命名了
+          return (
+           //  change() 函数在这边定义是放在里Weather的原型对象上  Weather实例本身并没有这个属性
+           //  所以render() 是找不到不到change方法的 必须加上this 到去原型对象上找
+            <h2 onClick={this.change}>☔が{this.state.isHot ? '大きい' : '小さい'}</h2>
+          );
+        }
+      }
+
+      ReactDOM.render(<Weather />, document.getElementById('app'));
+
+    </script>
+  </body>
+</html>

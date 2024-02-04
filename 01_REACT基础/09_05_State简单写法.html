@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>State简写</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.min.js"></script>
+    <script type="text/babel">
+      //简写版本
+      class MyComponent extends React.Component {
+        //类中可以直接追加属性
+        state = {
+          isHot: true,
+        };
+
+        //同样 方法也可以直接放在实例身上，（类中直接写方法实在原型对象上，原型对象的方法是没有this的）
+        //但是重点 这样 这是把方法换了个地方，还是没有this的，因为普通函数里面的this是undefined。
+        // change = function () {
+        //   console.log(this); //ndefined
+        //   this.setState({ show: !this.state.show });
+        // };
+
+        //这样写 change 直接就是MyComponent上的一个属性 this.change会直接调用this对象上的方法，而不会调用原型proto里面会丢失this的change方法了
+        //普通函数的this指向undefined 箭头函数没有自己this会外层找this
+        change = () => {
+          this.setState({ show: !this.state.show });
+        };
+
+        render() {
+          const { isHot } = this.state;
+          return (
+            <h2 onClick={this.change}>☔が{isHot ? '大きい' : '小さい'}</h2>
+          );
+        }
+      }
+
+      ReactDOM.render(<MyComponent />, document.getElementById('app'));
+    </script>
+  </body>
+</html>

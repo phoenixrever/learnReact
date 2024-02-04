@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>setState方法重新渲染组件</title>
 </head>
 <body>
 <div id="app"></div>
@@ -12,28 +12,31 @@
 <script type="text/babel">
     class MyComponent extends React.Component {
         constructor(props) {
-            console.log("constructor");//this必须在super后面其他可以在前面
+            //构造器只会调用1次 只会有1个MyComponent实例
+            console.log("constructor");
+            ////关于this的操作，this.state this.setState 等必须放在super后面，其他可以放在前面
             super(props);
             this.state = {
                 show:false
             };
             // bind作用 1 生产一个新的函数
             // 2 改变函数的this指向(原来是undefined)
-            // 这里 生成了一个this指向实例的函数赋值给this对象实例
+            // 这里 生成了一个this指向实例的函数赋值给this对象实例，而不是使用原型对象上没有绑定实例的函数
             this.change=this.change.bind(this);
         }
-        //change在原型上供实例调用
+
+        //不是调用在原型上change方法 而是bind 返回的绑定了this对象的新函数
+        //每次点击onClick 都会调用change方法
         change(){
+            //必须注意 setState 并不是替换了整个state 对象 而只是替换了其中一个属性的值，是合并操作，比如这里只替换了show属性，其他属性并没有丢失改变。
             this.setState({
                     show: !this.state.show
                 }
             );
-            //此处相当于 const x=p.change  this在use strict模式下直接调用是undefined
-            //类中的方法默认开启了局部的严格模式
-            console.log(this);
         }
-        //每调用一次setstate render就执行一次刷新页面
+        //每调用一次setstate react就会调用render()方法刷新页面 当然网页初始化的时候也会调用一次
         render() {
+            console.log('render 方法被调用了----->每调用一次setstate react就会调用render()方法刷新页面')
             //这边调用的是新生成赋值给this的新change函数
             return <h2 onClick={this.change} id="title">{this.state.show? '水卜桜は巨乳ではない':'橋本有菜没有腿'}</h2>
         }

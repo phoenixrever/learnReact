@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>类复习</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      //创建一个类
+      class Person {
+        //构造器方法
+        constructor(name, age) {
+          //构造器中的this是谁：是类的实例对象 谁创建实例的 this就是谁 比如p1
+          this.name = name;
+          this.age = age;
+        }
+        //speak 方法在类的原型对象上 
+        speak() {
+          //this指向： 谁调用speak  this是就是谁
+          console.log(`Person: name ： ${this.name} , age : ${this.age}`);
+          
+        }
+      }
+
+      //创建Person的对象
+      const p1 = new Person('tom', 18); 
+      console.log(p1);
+      p1.speak();
+
+      //通过call 改变this指向   apply bind  等都能更改this 指向
+      p1.speak.call({a:1,b:2})
+
+      //创建一个类继续Person
+      class Man extends Person{
+        constructor(name, age,money) {
+          //必须 写super 调用父类的构造器 和java 一样 super 必须放在所有属性之前调用
+          super(name,age)
+          this.money = money;
+        }
+
+        //重写父类继承的方法
+        speak() {
+          //this指向： 谁调用speak  this是就是谁
+          console.log(`MAN: name ： ${this.name}  age : ${this.age}  money: ${this.money}`);
+          
+        }
+      }
+
+      //Man 继承Person 所有属性和方法包括构造器 和java 一样 
+      const man = new Man("tough man",35,'１億');
+      console.log(man)
+      man.speak();
+
+    </script>
+  </body>
+</html>

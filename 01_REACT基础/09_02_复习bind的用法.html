@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>复习bind的用法</title>
 </head>
 <body>
 <script type="text/javascript">
     function test(){
         console.log(this);
     }
-    test();//windows
+    test();//直接调用 指向windows（这边不是在类中也没有使用babel）
 
+    //bind 返回了一个新函数 并且改变了调用test的对象（不在是window了）
     const x=test.bind({a:1,b:2});
     x(); //输出{a: 1, b: 2}
 </script>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>props的基本用法</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/javascript">
+    
+      let arr1 = [1, 3, 5, 7, 9];
+      let arr2 = [2, 4, 6, 8, 10];
+      console.log(...arr1);//展开一个数组 
+
+      let arr3 = [...arr1, ...arr2]; //合并2个数组
+      console.log(arr3);
+
+      //不确定到底有几个数计算和，相当于java的可变参数
+      function sum(...numbers){
+        console.log('numbers',numbers)//传入的值转化为一个数组
+        //代码片段提示 anfn
+        return numbers.reduce((previousValue,currentValue)=>previousValue+currentValue)
+      }
+      
+      console.log(sum(1,2,3,4,5))
+
+      //三点运算符能展开数组吗
+      //react中 {...p}不是克隆对象运算符 ...p 能直接展开对象是babel在做转化
+      //当然仅仅只能在标签属性中使用  别的地方不行
+      let persion = { name: 'shadow', age: 18 };
+      //console.log(...persion)//不能展开
+
+      //想复制一份Person
+      let copyPerson = persion
+      persion.name="tom"
+      //和java一样只是复制了指向 改了其中一个另外一个也会变
+      console.log(persion)
+      console.log(copyPerson)
+
+      //需要这样复制 外面加个花括号 触发字面量的形式复制一个对象 也可以追加和离修改原来属性（同名） 
+      //注意react 里面的花括号是定义react 变量 不是这边复制对象的意思
+      let copyPerson2 = {...persion,name:'pussy',sex:'unKonw'}
+      persion.name="jerry"
+      //和java一样只是复制了指向 改了其中一个另外一个也会变
+      console.log(persion)
+      console.log(copyPerson2)
+    </script>
+  </body>
+</html>

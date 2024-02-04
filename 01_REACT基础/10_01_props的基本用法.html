@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>props的基本用法</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../js/react.development.js"></script>
+    <script src="../js/react-dom.development.js"></script>
+    <script src="../js/babel.min.js"></script>
+    <script type="text/babel">
+      class Person extends React.Component {
+        render() {
+          console.log(this)
+          //props只读
+          const { name, sex, age } = this.props;
+          return (
+            <ul>
+              <li>{name}</li>
+              <li>{sex}</li>
+              <li>{age}</li>
+            </ul>
+          );
+        }
+      }
+
+      const p = {name:'仮面勇者',sex:'未知',age:999 }
+      //react中 {...p}不是克隆对象运算符 ...p 能直接展开对象是babel在做转化
+      //当然仅仅只能在标签属性中使用  别的地方不行
+      console.log("输出不了的：",...p)
+
+      ReactDOM.render(<Person {...p}/>, document.getElementById('app'));
+    </script>
+  </body>
+</html>

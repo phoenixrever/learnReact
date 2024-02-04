@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>State用bind解决this丢失问题</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+<script type="text/babel">
+    class MyComponent extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                show:false
+            };
+            /* 
+             分析 
+                解决MyComponent 中this指向问题
+                1.从右边开始执行，this对象没有change方法，会顺着原型对象找到change方法
+                2. bind作用: 
+                    1）生产一个新的函数
+                    2）改变函数的this指向(原来是undefined)
+                
+                结论：通过bind  确保函数在执行时的上下文始终是组件实例本身。并且这个新的函数需要地方放这，就赋值给对象属性了，
+                这样运行this.change 就是属性上绑定过this的新函数，而不是原型上没有绑定this对象的函数,就不会有丢失this问题了。
+
+            */
+            this.change=this.change.bind(this);
+        }
+
+        //这样改变show的值不能使页面刷新 需要使用setState方法
+        change() {
+          this.state.show = !this.state.show;
+        }
+
+        render() {
+            //这边调用的是新生成赋值给this的新change函数
+            return <h2 onClick={this.change} id="title">{this.state.show?'水卜桜は巨乳ではない':'橋本有菜没有腿'}</h2>
+        }
+
+    }
+    ReactDOM.render(<MyComponent/>, document.getElementById("app"),);
+</script>
+</body>
+</html>
