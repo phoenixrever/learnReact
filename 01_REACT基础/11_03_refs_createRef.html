@@ -11,14 +11,18 @@
 <script src="../js/babel.min.js"></script>
 <script type="text/babel">
     class MyComponent extends React.Component {
-        //createRef方法返回一个容器(类似refs属性对象),存储被ref表识的节点
-        //注意 每个元素都要生产一个createRef对象 同名字的货覆盖 只有一个current 元素
-        //同理 不能和react对象属性重名 比如取名refs
+        //React.createRef() 方法返回一个容器(类似refs属性对象),存储被ref表识的节点，该容器只能存放一个ref，key默认为current
+        //不能和react对象属性重名 比如取名refs
         myRef=React.createRef();
+
         state = {
             showValue: "xxxxxxxxx"
         };
         changeInput = () => {
+            //输出myRef容器 key为current
+            console.log(this.myRef)
+
+            //输出current对应的input的value
             this.setState({
                 showValue: this.myRef.current.value
             });
@@ -30,11 +34,11 @@
             });
         };
         render(){
-            console.log(this);
             return (
                 <div>
                     <input type="text" ref={this.myRef}/>
-                    <button onClick={this.changeInput}>点我</button>
+                    {/*  myRef只能存储一个节点，上面的就被button替换掉了 */}
+                    <button ref={this.myRef} onClick={this.changeInput}>点我</button>
                     <input type="text" onBlur={this.changeEvent}/>
                     <div>{this.state.showValue}</div>
                 </div>

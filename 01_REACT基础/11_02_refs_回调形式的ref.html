@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Refs</title>
+    <title>回调函数方式的ref</title>
   </head>
   <body>
     <div id="app"></div>
@@ -14,20 +14,18 @@
         state = {
           showValue: 'xxxxxxxxx',
         };
+
         changeInput = () => {
           // 字符串形式的ref
           // console.log(this.refs.input1.value);
           this.setState({
             showValue: this.refs.input1.value,
           });
-          //回掉方式的ref
-          /**
-           * 重要
-           * 每次render时候为了使之前的数据被清空 会首先传入null
-           * 之后第二次调用传入当前节点
-           */
+
           console.log(this.input2.value);
         };
+
+        //ref  没有通过内联函数定义
         classBindRef = (currentNode) => {
           this.refs.input3 = currentNode;
 
@@ -37,16 +35,27 @@
         render() {
           return (
             <div>
-              <input type="text" ref="input1" placeholder="点我提示数据" />
+              {/* 字符串形式的ref */}
+              <input type="text" ref="input1" placeholder="字符串形式的ref" />
+
+              {/* 
+               * 内联写法的回调函数方式的ref ,回调函数会调用2次
+               * 
+               * 重要
+               * 每次render时候为了使之前的数据被清空 会首先传入null
+               * 之后第二次调用传入当前节点
+              */}
               <input
                 type="text"
-                ref={(currentNode) => {
+                ref={currentNode => {
                   this.input2 = currentNode;
                   console.log('@', currentNode);
                 }}
               />
+              
+              {/* 函数作为属性的化，不是内联方式只会再初始化的时候执行一次 */}
               <input type="text" ref={this.classBindRef} />
-              <button onClick={this.changeInput}>点我提示左边的数据</button>
+              <button onClick={this.changeInput}>回调函数方式的ref</button>
               <div>{this.state.showValue}</div>
             </div>
           );

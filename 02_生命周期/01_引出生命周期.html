@@ -10,6 +10,8 @@
 <script src="../js/react-dom.development.js"></script>
 <script src="../js/babel.min.js"></script>
 <script type="text/babel">
+
+    //生命周期回调函数 <=====> 生命周期钩子函数 
     class LifeCycle extends React.Component {
         state = {
             opacity: 1,
@@ -17,23 +19,33 @@
         };
 
         tryHard = (event) => {
+            //卸载组件
             ReactDOM.unmountComponentAtNode(document.getElementById("app"))
         };
 
         //组件挂载完毕后调用
         componentDidMount(){
+            //componentDidMount 和render 都是组件实例直接调用的
             this.timer=setInterval(() => {
                 let {opacity} = this.state;
                 opacity -= 0.1;
                 if (opacity <= 0) opacity = 1;
+                //key 与 value 变量同名 可以简写
                 this.setState({opacity});
             }, 200)
         }
+
+
+        //组件将要卸载时候调用（还没卸载）
         componentWillUnmount(){
             clearInterval(this.timer);
         }
+
         //render调用时机:初始化, setState状态更新之后
         render() {
+            //不知道生命周期之前 因为不能再类里面写函数体 只能再render方法里面写setInterval
+            //每次setState 都会调用render方法 生成多个定时器
+            // setInterval(() => {}, 200);
             return (
                 <div>
                     <h1 style={{opacity: this.state.opacity,}}>強くなりたい</h1>

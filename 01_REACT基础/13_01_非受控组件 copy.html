@@ -16,7 +16,10 @@
             username: '',
             password: ''
         };
+
+        //柯里化
         saveFormData=(dataType)=>{
+            //onchange 调用时候会传递event 参数 
             return (event)=>{
                 this.setState({
                     //不能这样写会往state里面放个新键
@@ -27,6 +30,8 @@
 
             }
         };
+
+        //2个参数直接接收 非柯里化
         saveFormData2=(dataType,event)=>{
             this.setState({[dataType]:event.target.value});
 
@@ -42,7 +47,13 @@
                 <div>
                     <form onSubmit={this.handleSubmit}>
                         {/* this.saveFormData("username")  是把saveFormData的返回值给了onchange 而不是函数*/}
+
+                         {/* 注意下面参数的传递方式 */}
+
+                         {/* 解决1  柯里化  我saveFormData 不是一个函数 而是一个返回一个箭头函数的箭头函数 */}
                         <label>用户名 <input onChange={this.saveFormData("username")} type="text" /></label>
+
+                         {/* 解决2 非柯里化 saveFormData2 我放在箭头函数里面 */}
                         <label>密码 <input onChange={event=>this.saveFormData2("password",event)} type="password"/></label>
                         <button>登陆</button>
                     </form>

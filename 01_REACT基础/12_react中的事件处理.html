@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+<script type="text/babel">
+    class MyComponent extends React.Component {
+
+        /* 
+            1. 通过onXxx属性指定组件的事件处理函数(注意大小写)
+                1. React使用的是自定义(合成)事件, 而不是使用的原生DOM事件
+                2. React中的事件是通过事件委托方式处理的(委托给组件最外层的元素)(高效)
+            2. 通过target得到发生事件的DOM元素对象
+        
+        */
+        state = {
+            showValue: "xxxxxxxxx"
+        };
+        changeInput = () => {
+
+            this.setState({
+                showValue: this.myRef.current.value
+            });
+        };
+        
+        // react 在调用 onBlur 的时候会传一个event 事件给你
+        changeEvent = (event) => {
+            this.setState({
+                showValue: event.target.value
+            });
+        };
+        render(){
+            return (
+                <div>
+                    <input type="text" ref={this.myRef}/>
+                    <button ref={this.myRef} onClick={this.changeInput}>点我</button>
+
+                     {/*  尽量少用ref 操作的元素和事件产生的是同一个元素 就可以不用ref */}
+                    <input type="text" onBlur={this.changeEvent}/>
+                    <div>{this.state.showValue}</div>
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(<MyComponent/>,document.getElementById("app"),);
+
+</script>
+
+</body>
+</html>
