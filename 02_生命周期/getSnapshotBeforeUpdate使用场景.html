@@ -18,9 +18,9 @@
 <body>
 <div id="app">
 </div>
-<script src="../js.16.14/react.development.js"></script>
-<script src="../js.16.14/react-dom.development.js"></script>
-<script src="../js.16.14/babel.min.js"></script>
+<script src="../js.17.0.2/react.development.js"></script>
+<script src="../js.17.0.2/react-dom.development.js"></script>
+<script src="../js.17.0.2/babel.min.js"></script>
 <script type="text/babel">
 
     class Snapshot extends React.Component {
@@ -29,10 +29,13 @@
         };
 
         getSnapshotBeforeUpdate(){
+            //在新的新闻显示之前拿到当前list的高度
            return  this.refs.list.scrollHeight
         }
 
+        //滚动条滚动的时候，因为差值，list里面的内容不会变化
         componentDidUpdate(prevProps,prevState,height){
+            //当前list 移动的高度 = list 移动的高度+= 30（scrollHeight-height 永远是一个新闻的高度）
             this.refs.list.scrollTop+=this.refs.list.scrollHeight-height;
         }
         componentDidMount(){

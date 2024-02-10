@@ -6,9 +6,9 @@
 </head>
 <body>
 <div id="app"></div>
-<script src="../js.16.14/react.development.js"></script>
-<script src="../js.16.14/react-dom.development.js"></script>
-<script src="../js.16.14/babel.min.js"></script>
+<script src="../js.17.0.2/react.development.js"></script>
+<script src="../js.17.0.2/react-dom.development.js"></script>
+<script src="../js.17.0.2/babel.min.js"></script>
 <script type="text/babel">
     class Person extends React.Component {
         state = {
@@ -20,21 +20,23 @@
         };
         addPerson = () => {
             const {persons} = this.state;
+            //注意这边新加的数据在最前面，如果是加在最后面的化没有index的问题，当然也演示不了
             this.setState({
                 persons: [{id: persons.length+1, name: "渡边美波", age: 19},...persons]
             })
         };
-
+x
         render() {
             return (
                 <div>
                     <button onClick={this.addPerson}>addPerson</button>
-                    <h1>使用index作为key</h1>
+                    <h1>使用index索引值作为key</h1>
                     <ul>
                         {/*新数据放数组前时 本来更新一条dom就行 结果 index重新排列导致key变化  所有dom都套重新渲染*/}
                         {this.state.persons.map((item, index) => <li key={index}>{item.name}<input type="text"/></li>)}
                     </ul>
                     <hr/>
+                    <h1>使用ID(数组唯一标识)作为key</h1>
                     <ul>
                         {this.state.persons.map((item, index) => <li key={item.id}>{item.name}<input type="text"/></li>)}
                     </ul>

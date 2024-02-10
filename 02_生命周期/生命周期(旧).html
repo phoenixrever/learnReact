@@ -44,6 +44,7 @@
             console.log("lifecycle=========>componentDidMount");
         }
 
+        //不写默认返回true 如果写了并且返回false 更新状态到这就停下了
         shouldComponentUpdate(){
             console.log("lifecycle=========>shouldComponentUpdate");
             return true;
@@ -66,7 +67,8 @@
                     <div>{this.state.count}</div>
                     <button onClick={this.add}>+</button>
                     <button onClick={this.remove}>卸载组件</button>
-                    <button onClick={this.force}>强制更新不经过setState</button>
+                    {/* 验证 forceupdate  */}
+                    <button onClick={this.force}>强制更新不经过setState（不更改任何状态）</button>
                     <button onClick={this.passToInner}>違う、君は好きじゃない</button>
                     <InnerComponent　inner={this.state.inner}/>
                 </div>

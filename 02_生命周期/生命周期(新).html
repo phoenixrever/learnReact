@@ -6,9 +6,9 @@
 </head>
 <body>
 <div id="app"></div>
-<script src="../js.16.14/react.development.js"></script>
-<script src="../js.16.14/react-dom.development.js"></script>
-<script src="../js.16.14/babel.min.js"></script>
+<script src="../js.17.0.2/react.development.js"></script>
+<script src="../js.17.0.2/react-dom.development.js"></script>
+<script src="../js.17.0.2/babel.min.js"></script>
 <script type="text/babel">
     class Lifecycle extends React.Component {
         constructor() {
@@ -39,14 +39,17 @@
 
         //============================生命周期==============================
 
+        //getDerivedStateFromProps 不能作为类实例的一个方法 ，不是给实例用的，而是给类用的 要加static
         //派生状态会导致代码冗余,使组件难以维护,
         //只要不return和state一样的属性 就不会影响state值更新
         //可以在这比较props值和state的值
+        //总结 若state的值在任何时候都取决与porps 可以使用
         static getDerivedStateFromProps(props,state) {
             console.log("lifecycle=========>getDerivedStateFromProps",props,state);
-            // return {count:111}//不更新
-            // return null//更新
-            return props//更新
+            // 必须有返回值 状态对象 state 和null都行 
+            // return {count:111} 影响state值
+            // return null//不影响state值
+            return props//影响state值
         }
 
         /*
@@ -56,6 +59,7 @@
          */
         getSnapshotBeforeUpdate(){
             console.log("lifecycle=========>getSnapshotBeforeUpdate");
+            // 必须有返回值 snapshot value （字符串，数组，函数，对象等） 或者null
             return "shadowsilent";
         }
         componentDidMount() {
@@ -67,7 +71,7 @@
             return true;
         }
 
-        //oldState = [...oldProps,...oldState]
+        //snapshotValue 是getSnapshotBeforeUpdate 的返回值
         componentDidUpdate(oldProps,oldState,snapshotValue) {
             console.log("lifecycle=========>componentDidUpdate",oldProps,oldState,snapshotValue);
         }
@@ -82,6 +86,7 @@
             return (
                 <div>
                     <div>{this.state.count}</div>
+                    <div>{this.props.name}</div>
                     <button onClick={this.add}>+</button>
                     <button onClick={this.remove}>卸载组件</button>
                     <button onClick={this.force}>强制更新不经过setState</button>
