@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    <!--return push('/test1')的返回值false 禁止a标签跳转  -->
+    <a href="https://google.com" onclick="return push('/test1')">push test1</a><br><br>
+    <button onclick="push('/test2')">push test2</button><br><br>
+    <button onclick="replace('/test3')">replace test3</button><br><br>
+    <button onclick="back()">&lt;=回退</button>
+    <button onclick="forward()">前进 =&gt;</button>
+
+    <script type="text/javascript" src="./history.js"></script>
+    <script type="text/javascript">
+      // let history=History.createBrowserHistory(); //直接使用HTML5 推出的API
+      let history=History.createHashHistory(); //锚点 路径会多个#号不好看 不推荐使用
+      
+      function push(path) {
+        history.push(path)
+        return false
+      }
+
+      function replace(path) {
+        history.replace(path)
+      }
+      function back() {
+        history.goBack()
+      }
+      function forward() {
+        history.goForward()
+      }
+
+      history.listen((location) => { console.log("请求的路径变化了",location) })
+
+    </script>
+</body>
+</html>
