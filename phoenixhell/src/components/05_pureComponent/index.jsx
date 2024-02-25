@@ -6,7 +6,7 @@ class Parent extends PureComponent {
         status: "loser"
     };
     rebron = () => {
-        // this.setState({status: "rising form the ashes"})
+        // this.setState({status: "rising from the ashes"})
         this.setState({})
     };
 
@@ -36,7 +36,7 @@ class Parent extends PureComponent {
 class Child extends PureComponent {
     // shouldComponentUpdate(nextProps, nextState, nextContext) {
     //     console.log(nextProps);
-    //     return true
+    //     return !nextProps.status===this.props.status
     // }
 
     render() {

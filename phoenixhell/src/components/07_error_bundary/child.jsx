@@ -4,6 +4,8 @@ import {nanoid} from "nanoid";
 class Child extends Component {
     state={
         // users:[{name:'shadow'},{name:'phoenixhell'}]
+
+        //假设后端返回的数据格式错误
         users:'abc'
     };
     render() {
