@@ -30,7 +30,7 @@
     </style>
   </head>
   <body>
-    <h2>グリッドレイアウト設定</h2>
+    <h2>レイアウト設定</h2>
 
     <div class="form-row">
       <label for="pageWidth">ページ幅 (mm)</label>
@@ -50,6 +50,11 @@
     <div class="form-row">
       <label for="rows">行数</label>
       <input type="number" id="rows" value="47" />
+    </div>
+
+    <div class="form-row">
+      <label for="pageTitle">ページタイトル</label>
+      <input type="text" id="pageTitle" placeholder="例：ページタイトル" />
     </div>
 
     <div class="form-row">
@@ -110,13 +115,17 @@
             return;
           }
 
+          const htmlTitle =
+            document.getElementById('pageTitle').value.trim() ||
+            'ページタイトル';
+
           let html = `<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<title>グリッドレイアウト</title>
+<title>${htmlTitle}</title>
 <style>
-.sheet { display:grid; grid-template-columns:repeat(${cols},1fr); grid-template-rows:repeat(${rows},1fr); width:${pageWidth}mm; height:${pageHeight}mm; border:1px solid #000; box-sizing:border-box; padding:10px; margin:0 auto; }
+.page { display:grid; grid-template-columns:repeat(${cols},1fr); grid-template-rows:repeat(${rows},1fr); width:${pageWidth}mm; height:${pageHeight}mm; border:1px solid #000; box-sizing:border-box; padding:10px; margin:0 auto; }
 .cell { display:flex; align-items:center; justify-content:center; font-size:10px; background:#f9f9f9; text-align:center; box-sizing:border-box; overflow:hidden; white-space:nowrap; }
 .align-left { justify-content:flex-start; text-align:left; padding-left:3px; }
 .align-right { justify-content:flex-end; text-align:right; padding-right:3px; }
@@ -124,7 +133,7 @@
 </style>
 </head>
 <body>
-<div class="sheet">
+<div class="page">
 `;
 
           const lines = layoutData
