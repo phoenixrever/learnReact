@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>レイアウト生成</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .form-row label {
+        width: 150px;
+        font-weight: bold;
+      }
+      .form-row input,
+      .form-row textarea,
+      .form-row button {
+        flex: 1;
+        padding: 5px;
+        box-sizing: border-box;
+      }
+      textarea {
+        height: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>グリッドレイアウト設定</h2>
+
+    <div class="form-row">
+      <label for="pageWidth">ページ幅 (mm)</label>
+      <input type="number" id="pageWidth" value="297" />
+    </div>
+
+    <div class="form-row">
+      <label for="pageHeight">ページ高 (mm)</label>
+      <input type="number" id="pageHeight" value="210" />
+    </div>
+
+    <div class="form-row">
+      <label for="cols">列数</label>
+      <input type="number" id="cols" value="102" />
+    </div>
+
+    <div class="form-row">
+      <label for="rows">行数</label>
+      <input type="number" id="rows" value="47" />
+    </div>
+
+    <div class="form-row">
+      <label for="inputLayout">layoutData</label>
+      <textarea
+        id="inputLayout"
+        placeholder="例：1,1,10,6,タイトル,1&#10;1,8,20,5,プロジェクト名,1,left,12"
+      ></textarea>
+    </div>
+    <div
+      style="
+        margin-left: 150px;
+        font-size: 12px;
+        color: #555;
+        margin-bottom: 10px;
+      "
+    >
+      <p>
+        ※
+        フォーマット：列開始,行開始,列数,行数,テキスト,枠線(1=あり,0=なし),配置(left/center/right,
+        任意), フォントサイズ(px, 任意)
+      </p>
+      <p>
+        例：<br />1,1,10,6,タイトル,1<br />1,8,20,5,プロジェクト名,1,left,12
+      </p>
+    </div>
+    <br />
+    <div class="form-row">
+      <label>HTML を生成</label>
+      <button id="generateBtn">生成</button>
+    </div>
+
+    <div class="form-row">
+      <label>生成された HTML</label>
+      <textarea
+        id="outputArea"
+        placeholder="ここに生成された HTML が表示されます"
+      ></textarea>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const generateBtn = document.getElementById('generateBtn');
+        const inputLayout = document.getElementById('inputLayout');
+        const outputArea = document.getElementById('outputArea');
+
+        generateBtn.addEventListener('click', () => {
+          const pageWidth =
+            parseFloat(document.getElementById('pageWidth').value) || 297;
+          const pageHeight =
+            parseFloat(document.getElementById('pageHeight').value) || 210;
+          const cols = parseInt(document.getElementById('cols').value) || 102;
+          const rows = parseInt(document.getElementById('rows').value) || 47;
+
+          const layoutData = inputLayout.value.trim();
+          if (!layoutData) {
+            alert('layoutData を入力してください');
+            return;
+          }
+
+          let html = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>グリッドレイアウト</title>
+<style>
+.sheet { display:grid; grid-template-columns:repeat(${cols},1fr); grid-template-rows:repeat(${rows},1fr); width:${pageWidth}mm; height:${pageHeight}mm; border:1px solid #000; box-sizing:border-box; padding:10px; margin:0 auto; }
+.cell { display:flex; align-items:center; justify-content:center; font-size:10px; background:#f9f9f9; text-align:center; box-sizing:border-box; overflow:hidden; white-space:nowrap; }
+.align-left { justify-content:flex-start; text-align:left; padding-left:3px; }
+.align-right { justify-content:flex-end; text-align:right; padding-right:3px; }
+.align-center { justify-content:center; text-align:center; }
+</style>
+</head>
+<body>
+<div class="sheet">
+`;
+
+          const lines = layoutData
+            .split('\n')
+            .map((l) => l.trim())
+            .filter(Boolean);
+
+          for (const line of lines) {
+            const match = line.match(
+              /^(\d+),(\d+),(\d+),(\d+),([^,]+),(\d+)(?:,(left|center|right))?(?:,(\d+))?$/
+            );
+            if (!match) continue;
+
+            const [
+              _,
+              colStart,
+              rowStart,
+              colSpan,
+              rowSpan,
+              text,
+              borderFlag,
+              align = 'center',
+              fontSize = '10',
+            ] = match;
+
+            html += `<div class="cell align-${align}" style="grid-column:${colStart} / ${
+              parseInt(colStart) + parseInt(colSpan)
+            }; grid-row:${rowStart} / ${
+              parseInt(rowStart) + parseInt(rowSpan)
+            }; border:${
+              borderFlag === '1' ? '0.3px solid #888' : 'none'
+            }; font-size:${fontSize}px;">${text}</div>\n`;
+          }
+
+          html += `</div>
+</body>
+</html>`;
+
+          outputArea.value = html;
+        });
+      });
+    </script>
+  </body>
+</html>

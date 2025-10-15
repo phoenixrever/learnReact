@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>レイアウト</title>
+    <style>
+      .sheet {
+        display: grid;
+        grid-template-columns: repeat(102, 1fr);
+        grid-template-rows: repeat(47, 1fr);
+        width: 297mm;
+        height: 210mm;
+        border: 1px solid #000;
+        box-sizing: border-box;
+        padding: 10px;
+        margin: 0 auto;
+      }
+
+      .cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        background: #f9f9f9;
+        text-align: center;
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      /* 配置 */
+      .align-left {
+        justify-content: flex-start;
+        text-align: left;
+        padding-left: 3px;
+      }
+      .align-right {
+        justify-content: flex-end;
+        text-align: right;
+        padding-right: 3px;
+      }
+      .align-center {
+        justify-content: center;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sheet" id="sheet"></div>
+
+    <script>
+      // === 入力データ ===
+      // フォーマット：列開始,行開始,列数,行数,テキスト,枠線(1=あり,0=なし),配置(left/center/right),フォントサイズ
+      const layoutData = `
+      1,1,10,6,タイトル,1
+      1,8,20,5,プロジェクト名,1,left,12
+      20,8,30,5,備考,1,right,10
+      50,20,1,1,N,1
+      `;
+
+      const container = document.getElementById('sheet');
+      const lines = layoutData
+        .trim()
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean);
+
+      for (const line of lines) {
+        // 6～8項目をマッチ、alignとfontSizeはデフォルト値を設定
+        const match = line.match(
+          /^(\d+),(\d+),(\d+),(\d+),([^,]+),(\d+)(?:,(left|center|right))?(?:,(\d+))?$/
+        );
+        if (!match) {
+          console.warn('フォーマットエラー:', line);
+          continue;
+        }
+
+        const [
+          _,
+          colStart,
+          rowStart,
+          colSpan,
+          rowSpan,
+          text,
+          borderFlag,
+          align = 'center', // デフォルト中央揃え
+          fontSize = '10', // デフォルト10px
+        ] = match;
+
+        const div = document.createElement('div');
+        div.className = `cell align-${align}`;
+        div.textContent = text;
+
+        // gridの位置
+        div.style.gridColumn = `${colStart} / ${
+          parseInt(colStart) + parseInt(colSpan)
+        }`;
+        div.style.gridRow = `${rowStart} / ${
+          parseInt(rowStart) + parseInt(rowSpan)
+        }`;
+
+        // スタイル
+        div.style.border = borderFlag === '1' ? '0.3px solid #888' : 'none';
+        div.style.fontSize = `${fontSize}px`;
+
+        container.appendChild(div);
+      }
+    </script>
+  </body>
+</html>
