@@ -1,0 +1,122 @@
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const generateBtn = document.getElementById('generateBtn');
+    const inputLayout = document.getElementById('inputLayout');
+    const outputArea = document.getElementById('outputArea');
+
+    generateBtn.addEventListener('click', () => {
+      const pageWidth =
+        parseFloat(document.getElementById('pageWidth').value) || 297;
+      const pageHeight =
+        parseFloat(document.getElementById('pageHeight').value) || 210;
+      const cols = parseInt(document.getElementById('cols').value) || 102;
+      const rows = parseInt(document.getElementById('rows').value) || 47;
+
+      const layoutData = inputLayout.value.trim();
+      if (!layoutData) {
+        alert('layoutData を入力してください');
+        return;
+      }
+
+      const htmlTitle =
+        document.getElementById('pageTitle').value.trim() || 'ページタイトル';
+
+      let html = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>${htmlTitle}</title>
+<style>
+.page {
+  display:grid;
+  grid-template-columns:repeat(${cols},1fr);
+  grid-template-rows:repeat(${rows},1fr);
+  width:${pageWidth}mm;
+  height:${pageHeight}mm;
+  border:1px solid #000;
+  box-sizing:border-box;
+  padding:10px;
+  margin:0 auto;
+}
+.cell {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:10px;
+  background:#f9f9f9;
+  text-align:center;
+  box-sizing:border-box;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.align-left { justify-content:flex-start; text-align:left; padding-left:3px; }
+.align-right { justify-content:flex-end; text-align:right; padding-right:3px; }
+.align-center { justify-content:center; text-align:center; }
+</style>
+</head>
+<body>
+<div class="page">
+`;
+
+      const lines = layoutData
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean);
+
+      for (const line of lines) {
+        // 支持双引号包裹文本
+        const match = line.match(
+          /^(\d+),(\d+),(\d+),(\d+),(?:"([^"]+)"|([^,]+)),(\d+)(?:,(left|center|right))?(?:,(\d+))?$/
+        );
+        if (!match) continue;
+
+        const [
+          _,
+          colStart,
+          rowStart,
+          colSpan,
+          rowSpan,
+          textInQuotes,
+          textNoQuotes,
+          borderFlag,
+          align = 'center',
+          fontSize = '10',
+        ] = match;
+
+        const text = (textInQuotes || textNoQuotes).replace(/^"|"$/g, ''); // 去掉双引号
+
+        html += `<div class="cell align-${align}" style="grid-area:${rowStart} / ${colStart} / ${
+          parseInt(rowStart) + parseInt(rowSpan)
+        } / ${parseInt(colStart) + parseInt(colSpan)}; border:${
+          borderFlag === '1' ? '0.3px solid #888' : 'none'
+        }; font-size:${fontSize}px;">${text}</div>\n`;
+      }
+
+      html += `</div>
+</body>
+</html>`;
+
+      outputArea.value = html;
+    });
+  });
+</script>
+
+<!-- 
+✅ 改动说明：
+
+grid-column + grid-row 改为：
+
+grid-area: rowStart / colStart / rowEnd / colEnd;
+
+
+正则支持 双引号包裹文本，例如：
+
+1,1,10,6,"タイトル, メイン",1
+
+
+输出时会去掉双引号。
+
+
+
+
+-->
